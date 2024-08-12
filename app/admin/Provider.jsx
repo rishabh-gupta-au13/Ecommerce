@@ -1,9 +1,10 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { db } from '../../utils'
 import { userInfo } from '../../utils/schema'
 import { useUser } from '@clerk/nextjs'
-import { eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm';
+import { UserDetailsContext } from '../_context/UserDetailsContext'
 
 
 
@@ -11,6 +12,8 @@ import { eq } from 'drizzle-orm'
 function Provider({children}) {
 
     const {user}= useUser();
+
+    const [userDetail,setUserDetail]=useState([]);
 
 
     useEffect(()=>{
@@ -22,15 +25,16 @@ function Provider({children}) {
 
     const getUserDetails=async ()=>{
         const results=await db.select().from(userInfo).where(eq(userInfo.email,user?.primaryEmailAddress.emailAddress));
-
-        console.log(results)
+        setUserDetail(results[0])
     }
   return (
+    <UserDetailsContext.Provider value={{userDetail,setUserDetail}}>
     <div>
 
 
         {children}
     </div>
+    </UserDetailsContext.Provider>
   )
 }
 

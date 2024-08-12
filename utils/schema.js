@@ -8,7 +8,11 @@ export const userInfo=pgTable('userInfo',{
     email:varchar('email').notNull(),
     userName:varchar('userName').notNull(),
     userId:varchar('userId').notNull(),
-    bio:text('bio')
+    bio:text('bio'),
+    location:varchar('location'),
+    link: varchar('url'),
+    profileImage:varchar('profileImage')
+
     
 
 })
